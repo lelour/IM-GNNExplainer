@@ -1,0 +1,15 @@
+【文件说明】
+adj.txt:
+	边的三元组形式，行结构为[头结点\t边\尾节点\n]
+
+feature_label.csv:
+	节点feature和label，行结构为[nodeid\tfeature\tlabel\n]
+	其中，feature是536维的list
+
+label_map.txt:
+	feature_label.csv中的label列映射，dict
+	
+nodeid2txt.txt:
+	节点index和文本的对应关系，行结构为[nodeid\ttxt\n]
+	
+
