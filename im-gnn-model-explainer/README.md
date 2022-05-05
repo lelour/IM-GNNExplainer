@@ -2,8 +2,6 @@
 
 ## Using the explainer
 
-### Installation
-
 #### Training a GCN model 
 
 This is the model that will be explained. To re-train these models, run the following:
