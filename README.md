@@ -7,3 +7,6 @@ These two models are in im-gnn-model-explainer folder.
 
 # ATT
 This baseline model is in im-pyGAT folder.
+
+# NOTICE
+The data are not allowed to use out of this project without permission.
