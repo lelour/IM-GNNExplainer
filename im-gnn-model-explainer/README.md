@@ -13,8 +13,8 @@ This is the model that will be explained. To re-train these models, run the foll
 |----------|-------------------|--------------|--------------|--------------|
 | Context  | `context_centernode`  | Similar sentences are aggregated into central nodes and rest nodes <br><br>Central node selection: the node closest to the average value of the characteristics of the class point|Bert-Whitening output | [Sentence](#)In a session, the next sentence that is immediately adjacent has an edge   |
 | Words&Sentence (Balanced) | `doc_word_sen`  | The sentence is an individual, and the node is the thesaurus and sentence after sentence cleaning (word segmentation and remove stopwords)  | word node：one-hot<br>Sentence node：BOW|[word-sentence](#)：Inclusion relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship（Words B and C have appeared in a sentence at the same time, then they have edges）|
-| 词句+上下文构图 | `context_doc_word_sen`  | 在词句构图基础上追加了句间的边，打乱后随机取8：2=train:test 划分数据集| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：co-occurrence relationship <br> [句句](#): 句子在session中紧邻的上下句则有边|
-| 词句+上下文构图，按标签分布划分数据集 | `context_doc_word_sen_noshuffle`  | 较于context_doc_word_sen，区别在于划分数据集方式:按标签分布平均分配在trainset和testset中| Word Node：one-hot<br>Sentence Node：BOW|[word-sentence](#)：Inclusion Relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship <br> [sentence-sentence](#): 句子在session中紧邻的上下句则有边|
+| Words&Context | `context_doc_word_sen`  | The edges between sentences are added on the basis of word and sentence construction, which are taken randomly after being disturbed 8：2=train:test split dataset| Word Node：one-hot<br>Sentence Node：BOW|[word-sentence](#)：Inclusion Relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship <br> [sentence-sentence](#): The next sentence in a session has an edge|
+| Words&Context，Divide datasets by label distribution | `context_doc_word_sen_noshuffle`  | Compared with context_ doc_ word_ Sen, the difference lies in the way the dataset is divided:It is uniform distributed in trainset and testset according to label distribution| Word Node：one-hot<br>Sentence Node：BOW|[word-sentence](#)：Inclusion Relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship <br> [sentence-sentence](#): The next sentence in a session has an edge|
 
 ```
 python train.py --dataset=EXPERIMENT_NAME --graph_type=GRAPH_TYPE
@@ -42,12 +42,12 @@ where `EXPERIMENT_NAME` is the experiment you want to replicate.
 
 | Name      |`LABEL_IDX`|`EXPLAIN_NODES`(Words&Sentence graph construction)| 
 |----------|-------------------|-----------------|
-|未知标签|-1未知标签|range(786,836)|
-|非投诉会话|0非投诉会话|range(536,586)|
-|客户感受差|1客户感受差|range(586,635)|
-|投诉会话|2投诉会话|range(636,686)|
-|未解决问题|4未解决问题|range(686,736)|
-|四到类|5四到类|range(736,786)|
+|Unknown Label|-1 Unknown Label|range(786,836)|
+|Non complaint session|0 Non complaint session|range(536,586)|
+|Poor customer experience|1 Poor customer experience|range(586,635)|
+|Complaint conversation|2 Complaint conversation|range(636,686)|
+|Unresolved issues|4 Unresolved issues|range(686,736)|
+|Arrived|5 Arrived|range(736,786)|
 
 
 For a complete list of options provided by the explainer:
@@ -98,7 +98,7 @@ frameworks, for example [d3.js](http://observablehq.com). We provide [an example
 
 | Name     | `EXPERIMENT_NAME` | Description  |
 |----------|:-------------------:|--------------|
-| IM | `im`  | 我们的IM会话客人文本<br>multiple graph construction methods  |
+| IM | `im`  | Our IM conversation guest text<br>multiple graph construction methods  |
 
 > Datasets with a * are passed with the `--bmname` parameter rather than `--dataset` as they require being downloaded manually.
 
@@ -112,10 +112,10 @@ GNN models in the future.
 ## Projector Directory Introduction
 | Folder Name     | Description  | Internel Structure Description|
 |----------|-------------------|--------------|
-| ckpt  | 存储train.py训练好的GCN模型  |File naming rules：<br>'EXPERIMENT_NAME'_'GRAPH_TYPE'_'method'_h'dimension of GCN hidden layers'_o'dimension of GCN output layer'.pth.tar|
-| data  | 存储train.py涉及的数据集  |File naming rules：'GRAPH_TYPE'|
+| ckpt  |  Store pre-trained GCN model by train.py  |File naming rules：<br>'EXPERIMENT_NAME'_'GRAPH_TYPE'_'method'_h'dimension of GCN hidden layers'_o'dimension of GCN output layer'.pth.tar|
+| data  | Store related datasets with train.py  |File naming rules：'GRAPH_TYPE'|
 | explainer  | Implementation of the explainer.  |/|
-| log  | Storage of all experimental logs.  |**npy**:存放不同method(exp,att,grad,gat)的解释结果（**数值**）<br>npy directory structure：method/graph_type/label_idx/*.npy files<br><br>**subgraph**:store explanation results（**subgraph**）<br>subgraph directory structure： same as npy<br><br>**other files**：train.py生成的模型训练tfevents|
+| log  | Storage of all experimental logs.  |**npy**: Store the explanation results of different methods(exp,att,grad,gat)（**values**）<br>npy directory structure：method/graph_type/label_idx/*.npy files<br><br>**subgraph**:store explanation results（**subgraph**）<br>subgraph directory structure： same as npy<br><br>**other files**：train.py generated model training progress tfevents|
 | notebook  | GNN-Explainer - visualization execute file, Words&Sentence graph construction  |GNN-Explainer-Viz-att-doc_word_sen.ipynb : gnnexplainer integrated att<br>GNN-Explainer-Viz-grad-doc_word_sen.ipynb：gnnexplainer integrated grad<br>GNN-Explainer-Viz.ipynb：gnnexplainer method<br>remaining files：notebook|
 | utils  | some common script files  |/|
 | check_pred.py  | check prediction - output the GCN prediction overall result and sentence node result according to the model file<br>calculate and save the metrics of pred and label  |/|
