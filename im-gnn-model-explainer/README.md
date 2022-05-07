@@ -1,4 +1,4 @@
-# gnn-explainer
+# im-gnn-explainer
 
 ## Using the explainer
 
@@ -40,7 +40,7 @@ python explainer_main.py --dataset=EXPERIMENT_NAME --graph_type=GRAPH_TYPE --exp
 
 where `EXPERIMENT_NAME` is the experiment you want to replicate.
 
-| Name      |`LABEL_IDX`|`EXPLAIN_NODES`(词句构图)| 
+| Name      |`LABEL_IDX`|`EXPLAIN_NODES`(Words&Sentence graph construction)| 
 |----------|-------------------|-----------------|
 |未知标签|-1未知标签|range(786,836)|
 |非投诉会话|0非投诉会话|range(536,586)|
@@ -62,7 +62,7 @@ python train.py --help
 
 The result of the optimization can be visualized through Tensorboard.
 
-**LOGDIR**：events.out.tfevents.*文件所在文件夹级目录
+**LOGDIR**：events.out.tfevents.* Folder level directory of the file
 <br>e.g. .\im_doc_word_sen_att_h512_o256-04_25_18_04\
 ```
 tensorboard --logdir LOGDIR
@@ -98,7 +98,7 @@ frameworks, for example [d3.js](http://observablehq.com). We provide [an example
 
 | Name     | `EXPERIMENT_NAME` | Description  |
 |----------|:-------------------:|--------------|
-| IM | `im`  | 我们的IM会话客人文本<br>多种构图方式  |
+| IM | `im`  | 我们的IM会话客人文本<br>multiple graph construction methods  |
 
 > Datasets with a * are passed with the `--bmname` parameter rather than `--dataset` as they require being downloaded manually.
 
@@ -109,33 +109,33 @@ GNN models in the future.
 
 ## Changelog
 
-## Projector 目录介绍
+## Projector Directory Introduction
 | Folder Name     | Description  | Internel Structure Description|
 |----------|-------------------|--------------|
-| ckpt  | 存储train.py训练好的GCN模型  |文件命名规则：<br>'EXPERIMENT_NAME'_'GRAPH_TYPE'_'method'_h'GCN隐藏层维数'_o'GCN输出层维度'.pth.tar|
-| data  | 存储train.py涉及的数据集  |文件命名规则：'GRAPH_TYPE'|
+| ckpt  | 存储train.py训练好的GCN模型  |File naming rules：<br>'EXPERIMENT_NAME'_'GRAPH_TYPE'_'method'_h'dimension of GCN hidden layers'_o'dimension of GCN output layer'.pth.tar|
+| data  | 存储train.py涉及的数据集  |File naming rules：'GRAPH_TYPE'|
 | explainer  | Implementation of the explainer.  |/|
-| log  | 实验所有log存放.  |**npy**:存放不同method(exp,att,grad,gat)的解释结果（**数值**）<br>npy目录结构：method/graph_type/label_idx/*.npy文件<br><br>**subgraph**:存放解释结果（**子图**）<br>subgraph目录结构：同npy<br><br>**其他文件**：train.py生成的模型训练tfevents|
-| notebook  | GNN-Explainer可视化运行文件，构图为词句  |GNN-Explainer-Viz-att-doc_word_sen.ipynb : gnnexplainer集成att<br>GNN-Explainer-Viz-grad-doc_word_sen.ipynb：gnnexplainer集成的grad<br>GNN-Explainer-Viz.ipynb：gnnexplainer方法<br>剩余文件：原git自带notebook|
-| utils  | 一些通用的脚本文件  |/|
-| check_pred.py  | check prediction 根据模型文件输出GCN预测整体结果和句子节点结果<br>计算并保存pred和label的metrics  |/|
-|configs.py|train.py对应的配置文件|/|
-|explainer_main.py|gnnexplainer 执行文件|/|
-|gengraph.py |构图脚本|/|
-|models.py |模型脚本文件|/|
-|train.py |GCN训练脚本|/|
+| log  | Storage of all experimental logs.  |**npy**:存放不同method(exp,att,grad,gat)的解释结果（**数值**）<br>npy directory structure：method/graph_type/label_idx/*.npy files<br><br>**subgraph**:store explanation results（**subgraph**）<br>subgraph directory structure： same as npy<br><br>**other files**：train.py生成的模型训练tfevents|
+| notebook  | GNN-Explainer - visualization execute file, Words&Sentence graph construction  |GNN-Explainer-Viz-att-doc_word_sen.ipynb : gnnexplainer integrated att<br>GNN-Explainer-Viz-grad-doc_word_sen.ipynb：gnnexplainer integrated grad<br>GNN-Explainer-Viz.ipynb：gnnexplainer method<br>remaining files：notebook|
+| utils  | some common script files  |/|
+| check_pred.py  | check prediction - output the GCN prediction overall result and sentence node result according to the model file<br>calculate and save the metrics of pred and label  |/|
+|configs.py|train.py corresponding configuration file|/|
+|explainer_main.py|gnnexplainer execute file|/|
+|gengraph.py |graph construction script|/|
+|models.py |model script file|/|
+|train.py |GCN training script|/|
 
-**NOTICE：** 修改不同方法的参数设置位置
+**NOTICE：** Modify the parameter setting position of different methods
 
-explainer integrated [att](): configs.py中 parser.set_defaults(method='att')
+explainer integrated [att](): In configs.py, parser.set_defaults(method='att')
 
-explainer integrated [grad](): explainer_main.py中 masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='grad')
+explainer integrated [grad](): In explainer_main.py, masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='grad')
 
-[explainer]()（exp）: **1和2都需具备**
+[explainer]()（exp）: **Both 1 and 2 are required**
 
-    1.configs.py中 parser.set_defaults(method='base')
+    1.In configs.py, parser.set_defaults(method='base')
 
-    2.explainer_main.py中 masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='exp')
+    2.In explainer_main.py, masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='exp')
 [gat]():Open pyGAT Project
 
 
