@@ -6,13 +6,13 @@
 
 This is the model that will be explained. To re-train these models, run the following:
 
-##### 我们的数据集：EXPERIMENT_NAME = im
-#####我们的构图： 
+##### My Dataset：EXPERIMENT_NAME = im
+#####Graph Construction： 
 
 | Name     | `GRAPH_TYPE` | Description  | 节点特征  | 边关系构建  |
 |----------|-------------------|--------------|--------------|--------------|
-| 纯上下文构图 | `context_centernode`  | 相似句子聚合成中心节点和剩余节点 <br><br>中心节点选取：最接近所属类点特征的平均值的节点|Bert-Whitening output | [句子](#)在session中是紧邻的上下句则有边   |
-| 词句构图（均衡数据集） | `doc_word_sen`  | 句子为单独的个体，节点为句子清洗（分词去停）后的词库和句子  | 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系（词B和词C曾同时出现在一个句子中则有边）|
+| Context  | `context_centernode`  | 相似句子聚合成中心节点和剩余节点 <br><br>中心节点选取：最接近所属类点特征的平均值的节点|Bert-Whitening output | [句子](#)在session中是紧邻的上下句则有边   |
+| Words&Sentence (Balanced) | `doc_word_sen`  | 句子为单独的个体，节点为句子清洗（分词去停）后的词库和句子  | 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系（词B和词C曾同时出现在一个句子中则有边）|
 | 词句+上下文构图 | `context_doc_word_sen`  | 在词句构图基础上追加了句间的边，打乱后随机取8：2=train:test 划分数据集| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系 <br> [句句](#): 句子在session中紧邻的上下句则有边|
 | 词句+上下文构图，按标签分布划分数据集 | `context_doc_word_sen_noshuffle`  | 较于context_doc_word_sen，区别在于划分数据集方式:按标签分布平均分配在trainset和testset中| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系 <br> [句句](#): 句子在session中紧邻的上下句则有边|
 
@@ -99,7 +99,6 @@ frameworks, for example [d3.js](http://observablehq.com). We provide [an example
 | Name     | `EXPERIMENT_NAME` | Description  |
 |----------|:-------------------:|--------------|
 | IM | `im`  | 我们的IM会话客人文本<br>多种构图方式  |
-| Synthetic #1 | `syn1`  | Random BA graph with House attachments.  |
 
 > Datasets with a * are passed with the `--bmname` parameter rather than `--dataset` as they require being downloaded manually.
 
@@ -111,7 +110,7 @@ GNN models in the future.
 ## Changelog
 
 ## Projector 目录介绍
-| 文件夹名称     | Description  | 内部结构介绍|
+| Folder Name     | Description  | Internel Structure Description|
 |----------|-------------------|--------------|
 | ckpt  | 存储train.py训练好的GCN模型  |文件命名规则：<br>'EXPERIMENT_NAME'_'GRAPH_TYPE'_'method'_h'GCN隐藏层维数'_o'GCN输出层维度'.pth.tar|
 | data  | 存储train.py涉及的数据集  |文件命名规则：'GRAPH_TYPE'|
@@ -126,18 +125,18 @@ GNN models in the future.
 |models.py |模型脚本文件|/|
 |train.py |GCN训练脚本|/|
 
-**注：** 修改不同方法的参数设置位置
+**NOTICE：** 修改不同方法的参数设置位置
 
-explainer集成的[att](): configs.py中 parser.set_defaults(method='att')
+explainer integrated [att](): configs.py中 parser.set_defaults(method='att')
 
-explainer集成的[grad](): explainer_main.py中 masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='grad')
+explainer integrated [grad](): explainer_main.py中 masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='grad')
 
 [explainer]()（exp）: **1和2都需具备**
 
     1.configs.py中 parser.set_defaults(method='base')
 
     2.explainer_main.py中 masked_adj = explainer.explain_nodes_gnn_stats(range(655), prog_args,model='exp')
-[gat]():打开 pyGAT-master项目
+[gat]():Open pyGAT Project
 
 
 
