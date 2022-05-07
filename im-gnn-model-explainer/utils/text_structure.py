@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-author: ql.hua 
+author: Jian Li 
 create_dt: 2022/4/13 14:23
 """
 import math
