@@ -9,12 +9,12 @@ This is the model that will be explained. To re-train these models, run the foll
 ##### My Dataset：EXPERIMENT_NAME = im
 #####Graph Construction： 
 
-| Name     | `GRAPH_TYPE` | Description  | 节点特征  | 边关系构建  |
+| Name     | `GRAPH_TYPE` | Description  | Node Features  | Construct Edge Relationships  |
 |----------|-------------------|--------------|--------------|--------------|
-| Context  | `context_centernode`  | 相似句子聚合成中心节点和剩余节点 <br><br>中心节点选取：最接近所属类点特征的平均值的节点|Bert-Whitening output | [句子](#)在session中是紧邻的上下句则有边   |
-| Words&Sentence (Balanced) | `doc_word_sen`  | 句子为单独的个体，节点为句子清洗（分词去停）后的词库和句子  | 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系（词B和词C曾同时出现在一个句子中则有边）|
-| 词句+上下文构图 | `context_doc_word_sen`  | 在词句构图基础上追加了句间的边，打乱后随机取8：2=train:test 划分数据集| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系 <br> [句句](#): 句子在session中紧邻的上下句则有边|
-| 词句+上下文构图，按标签分布划分数据集 | `context_doc_word_sen_noshuffle`  | 较于context_doc_word_sen，区别在于划分数据集方式:按标签分布平均分配在trainset和testset中| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：共现关系 <br> [句句](#): 句子在session中紧邻的上下句则有边|
+| Context  | `context_centernode`  | Similar sentences are aggregated into central nodes and rest nodes <br><br>Central node selection: the node closest to the average value of the characteristics of the class point|Bert-Whitening output | [Sentence](#)In a session, the next sentence that is immediately adjacent has an edge   |
+| Words&Sentence (Balanced) | `doc_word_sen`  | The sentence is an individual, and the node is the thesaurus and sentence after sentence cleaning (word segmentation and remove stopwords)  | word node：one-hot<br>Sentence node：BOW|[word-sentence](#)：Inclusion relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship（Words B and C have appeared in a sentence at the same time, then they have edges）|
+| 词句+上下文构图 | `context_doc_word_sen`  | 在词句构图基础上追加了句间的边，打乱后随机取8：2=train:test 划分数据集| 词节点：one-hot<br>句节点：BOW|[句词](#)：包含关系 （句子A中有词B则AB有边） <br>[词词](#)：co-occurrence relationship <br> [句句](#): 句子在session中紧邻的上下句则有边|
+| 词句+上下文构图，按标签分布划分数据集 | `context_doc_word_sen_noshuffle`  | 较于context_doc_word_sen，区别在于划分数据集方式:按标签分布平均分配在trainset和testset中| Word Node：one-hot<br>Sentence Node：BOW|[word-sentence](#)：Inclusion Relationship （If there is word B in sentence A, there is edge AB） <br>[word-word](#)：co-occurrence relationship <br> [sentence-sentence](#): 句子在session中紧邻的上下句则有边|
 
 ```
 python train.py --dataset=EXPERIMENT_NAME --graph_type=GRAPH_TYPE
