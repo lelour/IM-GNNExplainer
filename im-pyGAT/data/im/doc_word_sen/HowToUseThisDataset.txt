@@ -1,15 +1,15 @@
-【文件说明】
+【Descriptions】
 adj.txt:
-	边的三元组形式，行结构为[头结点\t边\尾节点\n]
+	Triplet form of edges，row structure is为[Head Node\tEdge\Tail Node\n]
 
 feature_label.csv:
-	节点feature和label，行结构为[nodeid\tfeature\tlabel\n]
-	其中，feature是536维的list
+	node feature and label，row structure is [nodeid\tfeature\tlabel\n]
+	where，feature is 536 dimension list
 
 label_map.txt:
-	feature_label.csv中的label列映射，dict
+	Label column mapping in feature_label.csv，dict
 	
 nodeid2txt.txt:
-	节点index和文本的对应关系，行结构为[nodeid\ttxt\n]
+	Correspondence between node index and text，row structure is [nodeid\ttxt\n]
 	
 
